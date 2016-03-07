@@ -35,7 +35,7 @@ but we're going to get right to the point. How about creating awesome functions
 that can work with any data type... that's it.
 Let's apply this idea into our last example.
 We are using the letter T to tell swift that this is a generic type, but you can use
-others letters and words as well as long as they are not reserved or already in use.
+others letters and words as long they are not reserved or already in use.
 */
 func map<T>(value: T, transform: T -> T) -> T {
     return transform(value)

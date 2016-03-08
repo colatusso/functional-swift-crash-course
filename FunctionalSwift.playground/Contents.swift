@@ -11,13 +11,11 @@ Don't forget to try your own code after the examples.
 With this operation we are able to transform data.
 This first example is not very useful, but I believe it explains the
 very basic idea on how the map operation transform things.
-The method receives an **Int**(value) and uses it as
-an argument to the function you pass when calling it (transform).
 */
 import UIKit
 
 // this function receives an Int and a function
-// transform will run your function and return an Int
+// transform will run your function and return the transformed Int
 func map(value: Int, transform: Int -> Int) -> Int {
     return transform(value)
 }
@@ -182,7 +180,7 @@ filteredValues // 3, 6, 891
 ### 3. reduce
 With the reduce operation we are able to process a series of values
 into a single result. Ex: sum all the values in an array, concatenate strings.
-Let's begin with a reduce array extension, concatenating a few strings, already in swift... no suprises :)
+Let's begin with a reduce array extension, concatenating a few strings, the operation is already in swift... no suprises :)
 */
 extension Array {
     func reduce<T>(initialValue: T, combine: (T, Element) -> T) -> T {

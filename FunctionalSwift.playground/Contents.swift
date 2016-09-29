@@ -16,7 +16,7 @@ import UIKit
 
 // this function receives an Int and a function
 // transform will run your function and return the transformed Int
-func map(value: Int, transform: Int -> Int) -> Int {
+func map(_ value: Int, transform: (Int) -> Int) -> Int {
     return transform(value)
 }
 
@@ -35,17 +35,14 @@ Let's apply this idea into our last example.
 We are using the letter T to tell swift that this is a generic type, but you can use
 others letters and words as long they are not reserved or already in use.
 */
-func map<T>(value: T, transform: T -> T) -> T {
+func map<T>(_ value: T, transform: (T) -> T) -> T {
     return transform(value)
 }
 
 map("This") { x in x + " is a text" } // This is a text
 
-// or if you are an old school Objective-C coder
-map("This") { x in x.stringByAppendingString(" is another text") } // This is another Text
-
 // oh, and we can send other methods as an argument as well
-func addOne(x: Int) -> Int {
+func addOne(_ x: Int) -> Int {
     return x + 1
 }
 
@@ -67,7 +64,7 @@ so in the argument we are sending one **Element** and
 getting back our value that can be of any type.
 */
 extension Array {
-    func map<ICanHandleAnyType>(transform: Element -> ICanHandleAnyType) -> [ICanHandleAnyType] {
+    func map<ICanHandleAnyType>(_ transform: (Element) -> ICanHandleAnyType) -> [ICanHandleAnyType] {
         var result: [ICanHandleAnyType] = []
         
         for obj in self {
@@ -78,11 +75,11 @@ extension Array {
     }
 }
 
-var values = [10, 11, 12, 20]
+var values = [10, 11, 12, 50]
 values.map { x in x * x } // 100, 121, 144, 400
 
 // or using another method
-func power2(x: Int) -> Int {
+func power2(_ x: Int) -> Int {
     return x * x
 }
 
@@ -96,9 +93,10 @@ So, it doesn't matter the kind of array it is, what matters is the function you 
 it needs to be able to handle the type of data you are dealing inside the array.
 And yes, you can use it with custom types, like in this tuple array:
 */
-let breakingBadFavoriteChars = [("Walter", "White"), ("Jesse", "Pinkman"), ("Saul", "Goodman")]
-breakingBadFavoriteChars.map { firstName, lastName in "The name is " + lastName + "... " + firstName + " " + lastName }
-/*: 
+var theNameIs = "The name is "
+let breakingBadFavoriteChars = [("Walter", "White... "), ("Jesse", "Pinkman... "), ("Saul", "Goodman... ")]
+breakingBadFavoriteChars.map { firstName, lastName in theNameIs + lastName + firstName + " " + lastName }
+/*:
 resulting in:
 * The name is White... Walter White
 * The name is Pinkman... Jesse Pinkman
@@ -112,7 +110,7 @@ The basic idea here is to pass an array of any type and pass the rule we want to
 as an argument.
 */
 extension Array {
-    func filter(check: Element -> Bool) -> [Element] {
+    func filter(_ check: (Element) -> Bool) -> [Element] {
         var result: [Element] = []
         
         for obj in self where check(obj) {
@@ -123,7 +121,7 @@ extension Array {
     }
 }
 
-func checkForEven(value: Int) -> Bool {
+func checkForEven(_ value: Int) -> Bool {
     if value % 2 == 0 {
         return true
     }
@@ -183,7 +181,7 @@ into a single result. Ex: sum all the values in an array, concatenate strings.
 Let's begin with a reduce array extension, concatenating a few strings, the operation is already in swift... no suprises :)
 */
 extension Array {
-    func reduce<T>(initialValue: T, combine: (T, Element) -> T) -> T {
+    func reduce<T>(_ initialValue: T, combine: (T, Element) -> T) -> T {
         var result = initialValue
         
         for obj in self {
@@ -194,7 +192,7 @@ extension Array {
     }
 }
 
-func concatenateWithSpace(result: String, text: String) -> String {
+func concatenateWithSpace(_ result: String, text: String) -> String {
     // if first time return the text
     return (result == "") ? text : result + " " + text
 }
@@ -244,7 +242,7 @@ passed in the argument is the **Value** part of the pair, and the
 result will be of any type(**T**).
 */
 extension Dictionary {
-    func map<T>(transform: Value -> T) -> Dictionary<Key, T> {
+    func map<T>(_ transform: (Value) -> T) -> Dictionary<Key, T> {
         var result = Dictionary<Key, T>()
         
         for obj in self {
@@ -256,7 +254,7 @@ extension Dictionary {
     }
 }
 
-func addTenPorcent(value:Int) -> Int {
+func addTenPorcent(_ value:Int) -> Int {
     // it's Int * Double
     // so we have to cast
     return Int(Double(value) * 1.1)
@@ -270,7 +268,7 @@ Ok, let's say we want to select only cities with less than 3000 people
 in order to add those extra 10%. We can filter and than map it.
 */
 extension Dictionary {
-    func filter(check: Value -> Bool) -> Dictionary<Key, Value> {
+    func filter(_ check: (Value) -> Bool) -> Dictionary<Key, Value> {
         var result = Dictionary<Key, Value>()
         
         for obj in self where check(obj.1) {
